@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Validação de Formulário com Máscara de CPF - DOM</title>
+    <!-- Importação do arquivo CSS externo -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <h2>Cadastro de Usuário</h2>
+
+    <div class="campo-container">
+        <label for="campoNome">Nome Completo:</label>
+        <input type="text" id="campoNome" placeholder="Digite seu nome">
+    </div>
+
+    <div class="campo-container">
+        <label for="campoCpf">CPF:</label>
+        <input type="text" id="campoCpf" placeholder="000.000.000-00" maxlength="14">
+    </div>
+
+    <div class="campo-container">
+        <label for="campoEmail">E-mail:</label>
+        <input type="email" id="campoEmail" placeholder="seuemail@exemplo.com">
+    </div>
+
+    <div class="campo-container">
+        <label for="campoData">Data de Nascimento:</label>
+        <input type="date" id="campoData">
+    </div>
+
+    <div class="campo-container">
+        <label for="campoSenha">Senha:</label>
+        <input type="password" id="campoSenha" placeholder="Digite sua senha">
+    </div>
+
+    <button id="btnCadastrar">Cadastrar</button>
+
+    <div id="painelResultado"></div>
+
+    <script>
+        // 1. Mapeamento dos Elementos do DOM
+        const campoNome = document.getElementById('campoNome');
+        const campoCpf = document.getElementById('campoCpf');
+        const campoEmail = document.getElementById('campoEmail');
+        const campoData = document.getElementById('campoData');
+        const campoSenha = document.getElementById('campoSenha');
+        const btnCadastrar = document.getElementById('btnCadastrar');
+        const divResultado = document.getElementById('painelResultado');
+
+        const listaCampos = [campoNome, campoCpf, campoEmail, campoData, campoSenha];
+
+        // 2. Máscara Dinâmica e Restrição de Apenas Números no CPF
+        campoCpf.addEventListener('input', function() {
+            let valor = campoCpf.value.replace(/\D/g, '');
+
+            valor = valor.replace(/(\d{3})(\d)/, '$1.$2');
+            valor = valor.replace(/(\d{3})(\d)/, '$1.$2');
+            valor = valor.replace(/(\d{3})(\d{1,2})$/, '$1-$2');
+
+            campoCpf.value = valor;
+        });
+
+        // 3. Função para Gerar e Baixar o Arquivo TXT no Navegador
+        function salvarDadosEmTXT(dados) {
+            // Formata o texto que vai pra dentro do arquivo TXT
+            const conteudoTXT = `=== DADOS DO CADASTRO ===\n` +
+                `Nome: ${dados.nome}\n` +
+                `CPF: ${dados.cpf}\n` +
+                `E-mail: ${dados.email}\n` +
+                `Data de Nascimento: ${dados.dataNascimento}\n` +
+                `Senha: ${dados.senha}\n` +
+                `=========================\n`;
+
+            // Cria um Blob (Binary Large Object) simulando o arquivo de texto na memória do navegador
+            const blob = new Blob([conteudoTXT], { type: 'text/plain;charset=utf-8' });
+
+            // Cria uma tag <a> oculta para disparar o download automaticamente
+            const linkDownload = document.createElement('a');
+            linkDownload.href = URL.createObjectURL(blob);
+            linkDownload.download = `cadastro_${dados.nome.toLowerCase().replace(/\s+/g, '_')}.txt`;
+
+            // Simula o clique do usuário para iniciar o download e limpa a URL criada
+            document.body.appendChild(linkDownload);
+            linkDownload.click();
+            document.body.removeChild(linkDownload);
+            URL.revokeObjectURL(linkDownload.href);
+        }
+
+        // 4. Validação Disparada ao Clicar no Botão
+        btnCadastrar.addEventListener('click', function() {
+            let temCampoVazio = false;
+
+            listaCampos.forEach(campo => {
+                if (campo.value.trim() === '') {
+                    campo.classList.add('campo-erro');
+                    temCampoVazio = true;
+                } else {
+                    campo.classList.remove('campo-erro');
+                }
+            });
+
+            if (temCampoVazio) {
+                divResultado.className = 'msg-erro';
+                divResultado.innerText = 'Atenção: Preencha todos os campos destacados!';
+                return;
+            }
+
+            // Organiza os dados capturados em um objeto
+            const dadosUsuario = {
+                nome: campoNome.value.trim(),
+                cpf: campoCpf.value.trim(),
+                email: campoEmail.value.trim(),
+                dataNascimento: campoData.value,
+                senha: campoSenha.value.trim()
+            };
+
+            // Dispara o salvamento e o download do arquivo .txt
+            salvarDadosEmTXT(dadosUsuario);
+
+            // Mensagem de confirmação na tela
+            divResultado.className = 'msg-sucesso';
+            divResultado.innerText = `Cadastro de ${dadosUsuario.nome} realizado com sucesso! Redirecionando para a tela de login...`;
+
+            // Redireciona para o login após 2 segundos
+            setTimeout(function() {
+                window.location.href = 'login.html';
+            }, 2000);
+        });
+    </script>
+</body>
+</html>

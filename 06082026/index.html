@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Passo 1: Título da página -->
+    <title>Exercício Prático de DOM</title>
+</head>
+<body>
+
+    <!-- Passo 2: Elementos Visuais -->
+    <input type="text" id="campoTexto" placeholder="Digite algo aqui...">
+    <button id="btnExibir">Exibir Texto</button>
+    <div id="painelResultado"></div>
+
+    <!-- Script JavaScript no final do body -->
+    <script>
+        // Passo 3: Mapear os Elementos com JavaScript
+        const input = document.getElementById('campoTexto');
+        const botao = document.querySelector('#btnExibir');
+        const divResultado = document.querySelector('#painelResultado');
+
+        // Passo 4: Inspecionar Propriedades no Console
+        console.log(input.id);
+        console.log(botao.tagName);
+
+        // Passo 5: Criar a Ação de Clique e Exibir o Resultado
+        botao.addEventListener('click', function() {
+            const texto = input.value;
+            console.log(texto);
+            divResultado.innerText = texto;
+        });
+    </script>
+</body>
+</html>

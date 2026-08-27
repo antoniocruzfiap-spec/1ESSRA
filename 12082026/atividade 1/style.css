@@ -1,0 +1,40 @@
+body {
+    font-family: Arial, sans-serif;
+    padding: 20px;
+}
+
+/* Estado normal do input */
+input {
+    padding: 8px;
+    border: 2px solid #ccc;
+    border-radius: 4px;
+    outline: none;
+}
+
+/* Estado de Erro */
+input.campo-erro {
+    border-color: #e74c3c;
+    background-color: #fceae9;
+}
+
+button {
+    padding: 8px 15px;
+    background-color: #2ecc71;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+#painelResultado {
+    margin-top: 15px;
+    font-weight: bold;
+}
+
+.msg-erro {
+    color: #e74c3c;
+}
+
+.msg-sucesso {
+    color: #27ae60;
+}
