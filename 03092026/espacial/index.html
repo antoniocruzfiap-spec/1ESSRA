@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mapeamento Intergaláctico - Aula de Funções</title>
+    <!-- Vinculando o CSS Externo -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="container">
+        <h2>Catálogo de Dados Galácticos</h2>
+
+        <!-- Passo 1: Seleção da Galáxia -->
+        <div class="campo-container">
+            <label for="selectGalaxias">1. Selecione a Galáxia:</label>
+            <select id="selectGalaxias">
+                <option value="">-- Selecione uma Galáxia --</option>
+            </select>
+        </div>
+
+        <!-- Passo 2: Nome da Constelação -->
+        <div class="campo-container">
+            <label for="campoConstelacao">Nome do Setor / Constelação:</label>
+            <input type="text" id="campoConstelacao" placeholder="Ex: Setor Alfa">
+        </div>
+
+        <!-- Passo 3: Campos Gerados Dinamicamente -->
+        <div id="containerPlanetas"></div>
+
+        <button id="btnRegistrar" style="display: none;">Salvar e Exportar Registro (.txt)</button>
+
+        <div id="painelResultado"></div>
+
+        <!-- Passo 4: Listagem em Tela -->
+        <div id="secaoListagem" style="display: none;">
+            <h3>Sistemas Catalogados na Sessão</h3>
+            <div id="listaSalvos"></div>
+        </div>
+    </div>
+
+    <!-- Vinculando os scripts externos na ordem correta -->
+    <script src="galaxiasData.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>

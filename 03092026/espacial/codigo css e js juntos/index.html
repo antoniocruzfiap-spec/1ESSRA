@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mapeamento Intergaláctico - Cadastro de Constelações</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #0f172a;
+            color: #f8fafc;
+            padding: 30px;
+        }
+        .container {
+            max-width: 750px;
+            margin: 0 auto;
+            background-color: #1e293b;
+            padding: 25px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+        }
+        h2, h3 { color: #38bdf8; text-align: center; }
+        .campo-container { margin-bottom: 15px; }
+        label { display: block; margin-bottom: 5px; font-weight: bold; font-size: 14px; }
+        input, select {
+            width: 100%; padding: 10px; border: 1px solid #475569;
+            border-radius: 4px; background-color: #0f172a; color: #fff; box-sizing: border-box;
+        }
+        .bloco-planeta {
+            background-color: #0f172a;
+            border: 1px solid #334155;
+            border-left: 4px solid #38bdf8;
+            padding: 15px;
+            margin-bottom: 15px;
+            border-radius: 6px;
+        }
+        .bloco-planeta h4 { margin: 0 0 10px 0; color: #7dd3fc; }
+        .grid-planeta {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+        button {
+            width: 100%; padding: 12px; background-color: #0284c7; color: white;
+            border: none; border-radius: 4px; font-size: 16px; cursor: pointer; margin-top: 10px;
+        }
+        button:hover { background-color: #0369a1; }
+        #painelResultado { margin-top: 20px; padding: 15px; border-radius: 4px; text-align: center; font-weight: bold; }
+        .msg-erro { background-color: #7f1d1d; color: #fca5a5; }
+        .msg-sucesso { background-color: #14532d; color: #86efac; }
+        #listaSalvos { margin-top: 15px; }
+        .card-historico {
+            background-color: #0f172a; border-left: 4px solid #4ade80;
+            padding: 10px; margin-top: 8px; border-radius: 4px; font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h2>Catálogo de Dados Galácticos</h2>
+
+        <!-- Passo 1: Seleção da Galáxia -->
+        <div class="campo-container">
+            <label for="selectGalaxias">1. Selecione a Galáxia:</label>
+            <select id="selectGalaxias">
+                <option value="">-- Selecione uma Galáxia --</option>
+            </select>
+        </div>
+
+        <!-- Passo 2: Nome da Constelação -->
+        <div class="campo-container">
+            <label for="campoConstelacao">Nome do Setor / Constelação:</label>
+            <input type="text" id="campoConstelacao" placeholder="Ex: Setor Alfa">
+        </div>
+
+        <!-- Passo 3: Campos Gerados Dinamicamente -->
+        <div id="containerPlanetas"></div>
+
+        <button id="btnRegistrar" style="display: none;">Salvar e Exportar Registro (.txt)</button>
+
+        <div id="painelResultado"></div>
+
+        <!-- Passo 4: Listagem em Tela -->
+        <div id="secaoListagem" style="display: none;">
+            <h3>Sistemas Catalogados na Sessão</h3>
+            <div id="listaSalvos"></div>
+        </div>
+    </div>
+
+    <!-- 1º Importa a base de dados primeiro -->
+    <script src="../galaxiasData.js"></script>
+
+    <!-- 2º Executa a lógica da aplicação -->
+    <script>
+        const selectGalaxias = document.getElementById('selectGalaxias');
+        const campoConstelacao = document.getElementById('campoConstelacao');
+        const containerPlanetas = document.getElementById('containerPlanetas');
+        const btnRegistrar = document.getElementById('btnRegistrar');
+        const divResultado = document.getElementById('painelResultado');
+        const secaoListagem = document.getElementById('secaoListagem');
+        const listaSalvos = document.getElementById('listaSalvos');
+
+        // 1. POPULAR O SELECT AO CARREGAR A PÁGINA
+        galaxiasData.forEach((item, index) => {
+            const option = document.createElement('option');
+            option.value = index;
+            option.textContent = `${item.galaxia} (${item.planetas.length} planetas)`;
+            selectGalaxias.appendChild(option);
+        });
+
+        // 2. RENDERIZAR PLANETAS AO SELECIONAR A GALÁXIA
+        selectGalaxias.addEventListener('change', function() {
+            const indiceSelecionado = selectGalaxias.value;
+            containerPlanetas.innerHTML = '';
+
+            if (indiceSelecionado === '') {
+                btnRegistrar.style.display = 'none';
+                return;
+            }
+
+            const galaxiaObjeto = galaxiasData[indiceSelecionado];
+
+            galaxiaObjeto.planetas.forEach((planeta, i) => {
+                const divPlaneta = document.createElement('div');
+                divPlaneta.className = 'bloco-planeta';
+
+                divPlaneta.innerHTML = `
+                    <h4>Planeta ${i + 1}: ${planeta.nome}</h4>
+                    <div class="grid-planeta">
+                        <div>
+                            <label>Nome do Planeta:</label>
+                            <input type="text" class="input-nome" value="${planeta.nome}">
+                        </div>
+                        <div>
+                            <label>Diâmetro / Tamanho:</label>
+                            <input type="text" class="input-diametro" value="${planeta.diametro}">
+                        </div>
+                        <div>
+                            <label>Distância da Terra:</label>
+                            <input type="text" class="input-distancia" value="${planeta.distancia}">
+                        </div>
+                        <div>
+                            <label>Tipo Astronômico:</label>
+                            <input type="text" class="input-tipo" value="${planeta.tipo}">
+                        </div>
+                    </div>
+                `;
+
+                containerPlanetas.appendChild(divPlaneta);
+            });
+
+            btnRegistrar.style.display = 'block';
+        });
+
+        // 3. EXPORTAR TXT E ADICIONAR NA LISTA
+        btnRegistrar.addEventListener('click', function() {
+            if (campoConstelacao.value.trim() === '') {
+                divResultado.className = 'msg-erro';
+                divResultado.innerText = 'Preencha o nome do Setor / Constelação!';
+                return;
+            }
+
+            const indiceGalaxia = selectGalaxias.value;
+            const nomeGalaxia = galaxiasData[indiceGalaxia].galaxia;
+            const constelacao = campoConstelacao.value.trim();
+            const blocos = document.querySelectorAll('.bloco-planeta');
+            const listaPlanetasProcessados = [];
+
+            blocos.forEach(bloco => {
+                listaPlanetasProcessados.push({
+                    nome: bloco.querySelector('.input-nome').value.trim(),
+                    diametro: bloco.querySelector('.input-diametro').value.trim(),
+                    distancia: bloco.querySelector('.input-distancia').value.trim(),
+                    tipo: bloco.querySelector('.input-tipo').value.trim()
+                });
+            });
+
+            // Monta o arquivo TXT
+            let conteudoTXT = `=== REGISTRO ASTRONÔMICO ===\n`;
+            conteudoTXT += `Galáxia: ${nomeGalaxia}\n`;
+            conteudoTXT += `Setor/Constelação: ${constelacao}\n`;
+            conteudoTXT += `-----------------------------------\n`;
+
+            listaPlanetasProcessados.forEach((p, index) => {
+                conteudoTXT += `Planeta ${index + 1}: ${p.nome}\n`;
+                conteudoTXT += `  - Tamanho: ${p.diametro}\n`;
+                conteudoTXT += `  - Distância: ${p.distancia}\n`;
+                conteudoTXT += `  - Classe: ${p.tipo}\n\n`;
+            });
+
+            // Download automático do TXT
+            const blob = new Blob([conteudoTXT], { type: 'text/plain;charset=utf-8' });
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(blob);
+            link.download = `sistema_${constelacao.toLowerCase().replace(/\s+/g, '_')}.txt`;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            URL.revokeObjectURL(link.href);
+
+            // Renderiza na lista abaixo
+            secaoListagem.style.display = 'block';
+            const card = document.createElement('div');
+            card.className = 'card-historico';
+
+            let textoPlanetas = listaPlanetasProcessados.map(p => 
+                `<b>${p.nome}</b> (${p.tipo} - ${p.diametro} - ${p.distancia})`
+            ).join('<br> ');
+
+            card.innerHTML = `<strong>Setor:</strong> ${constelacao} [${nomeGalaxia}]<br>${textoPlanetas}`;
+            listaSalvos.appendChild(card);
+
+            divResultado.className = 'msg-sucesso';
+            divResultado.innerText = 'Registro exportado em arquivo TXT e listado abaixo com sucesso!';
+        });
+    </script>
+</body>
+</html>
