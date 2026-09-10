@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aula 1ESSRA - Sorteador de Fotos HD via API</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="card">
+        <h2>📸 Galeria de Fotos HD (Picsum API)</h2>
+        <p>Clique no botão abaixo para buscar uma nova fotografia em alta resolução:</p>
+        
+        <button id="btnBuscar">Sortear Nova Foto</button>
+
+        <span id="status"></span>
+
+        <div id="resultadoContainer" class="resultado-container">
+            <img id="imagemResultado" src="" alt="Foto HD">
+            <div class="info-foto">
+                <p><strong>Autor:</strong> <span id="autorFoto">-</span></p>
+                <p><strong>Dimensões:</strong> <span id="descricaoFoto">-</span></p>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

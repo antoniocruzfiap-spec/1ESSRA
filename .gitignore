@@ -1,0 +1,8 @@
+# Bloquear arquivos temporários do Office
+~$*.pptx
+~$*.docx
+~$*.xlsx
+
+# Arquivos temporários do SO
+.DS_Store
+Thumbs.db

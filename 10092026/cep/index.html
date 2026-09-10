@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aula 1ESSRA - Consumo de API (ViaCEP)</title>
+    <!-- Vinculação do arquivo de estilos externo -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="form-card">
+        <h2>📍 Formulário com Autopreenchimento</h2>
+        
+        <div class="grupo-campo">
+            <label for="cep">CEP:</label>
+            <input type="text" id="cep" placeholder="Digite apenas números" maxlength="8">
+            <span id="status"></span>
+        </div>
+
+        <div class="grupo-campo">
+            <label for="logradouro">Rua / Logradouro:</label>
+            <input type="text" id="logradouro" readonly>
+        </div>
+
+        <div class="grupo-campo">
+            <label for="bairro">Bairro:</label>
+            <input type="text" id="bairro" readonly>
+        </div>
+
+        <div class="grupo-campo">
+            <label for="cidade">Cidade:</label>
+            <input type="text" id="cidade" readonly>
+        </div>
+
+        <div class="grupo-campo">
+            <label for="uf">Estado (UF):</label>
+            <input type="text" id="uf" readonly>
+        </div>
+    </div>
+
+    <!-- Vinculação do arquivo de lógica em JavaScript -->
+    <script src="script.js"></script>
+</body>
+</html>
