@@ -20,35 +20,7 @@ function popularDatalistArtistas(lista) {
         listaArtistas.appendChild(option);
     });
 }
-
-// 3. FUNÇÃO: Validação Matemática Algorítmica do CPF
-function validarCPF(cpf) {
-    // Limpa pontuações mantendo apenas números
-    cpf = cpf.replace(/\D/g, '');
-
-    // Verifica tamanho de 11 dígitos ou sequências repetidas
-    if (cpf.length !== 11 || /^(\d)\1{10}$/.test(cpf)) return false;
-
-    // Cálculo do 1º Dígito Verificador
-    let soma = 0;
-    for (let i = 0; i < 9; i++) {
-        soma += parseInt(cpf.charAt(i)) * (10 - i);
-    }
-    let resto = (soma * 10) % 11;
-    if (resto === 10 || resto === 11) resto = 0;
-    if (resto !== parseInt(cpf.charAt(9))) return false;
-
-    // Cálculo do 2º Dígito Verificador
-    soma = 0;
-    for (let i = 0; i < 10; i++) {
-        soma += parseInt(cpf.charAt(i)) * (11 - i);
-    }
-    resto = (soma * 10) % 11;
-    if (resto === 10 || resto === 11) resto = 0;
-    if (resto !== parseInt(cpf.charAt(10))) return false;
-
-    return true; // CPF Válido
-}
+// validar cpf foi movida pro utils
 
 // 4. Máscaras Dinâmicas (CPF e Celular)
 campoCpf.addEventListener('input', function() {
@@ -105,6 +77,22 @@ btnCadastrar.addEventListener('click', function() {
         artista: campoArtista.value.trim()
     };
 
+    // Monta o TEXTO do comprovante (regra de negócio do Rock in Rio)
+    const conteudoComprovante =
+`=== PRÉ-CADASTRO DE INGRESSO ROCK IN RIO ===
+Nome: ${dadosReserva.nome}
+CPF: ${dadosReserva.cpf}
+E-mail: ${dadosReserva.email}
+Celular: ${dadosReserva.celular}
+Atração Selecionada: ${dadosReserva.artista}
+===========================================`;
+
+    // Nome dinâmico do arquivo: ingresso_nome_do_usuario.txt
+    const nomeLimpo = dadosReserva.nome.toLowerCase().replace(/\s+/g, '_');
+    const nomeArquivo = `ingresso_${nomeLimpo}.txt`;
+
+    // Dispara o download usando a função GENÉRICA do utils.js
+    salvarDadosEmTXT(nomeArquivo, conteudoComprovante);
 
     // Mensagem de Sucesso na Tela
     divResultado.className = 'msg-sucesso';
