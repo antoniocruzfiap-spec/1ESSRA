@@ -1,0 +1,25 @@
+{
+  "usuarios": [
+    {
+      "nome": "John Snow Stark",
+      "email": "johns@email.com",
+      "cpf": "123.456.789-00",
+      "cep": "01001-000",
+      "rua": "",
+      "bairro": "",
+      "cidadeUf": "",
+      "id": "1"
+    },
+    {
+      "nome": "Teste Teste",
+      "email": "testeteste@gmail,cm",
+      "cpf": "365.655.180-41",
+      "cep": "22765535",
+      "rua": "Rua Coronel Eunir",
+      "bairro": "Gardênia Azul",
+      "cidadeUf": "Rio de Janeiro - RJ",
+      "id": "wlUrpqA0kH8"
+    }
+  ],
+  "$schema": "./node_modules/json-server/schema.json"
+}
